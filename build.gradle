@@ -1,0 +1,39 @@
+plugins {
+    id 'java'
+    id 'groovy'
+    id "org.springframework.boot" version "2.3.0.RELEASE"
+    id "io.spring.dependency-management" version "1.0.9.RELEASE"
+    id "io.freefair.lombok" version "5.1.0"
+}
+
+apply plugin: "io.spring.dependency-management"
+
+group 'com.symphony'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    
+    compileOnly 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    compile 'org.springframework.boot:spring-boot-starter-parent:2.1.2.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-integration:2.1.2.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-web:2.1.2.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-data-mongodb'
+
+
+    compile 'org.springframework.kafka:spring-kafka'
+
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    testImplementation 'org.spockframework:spock-core:1.1-groovy-2.4'
+    testImplementation 'org.spockframework:spock-spring:1.1-groovy-2.4'
+
+}

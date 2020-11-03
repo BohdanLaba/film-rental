@@ -1,0 +1,10 @@
+server:
+  port: 8080
+  contextPath: /
+
+mongoUri: 'mongodb://localhost:27017/'
+mongoDbName: 'filmrentaldb'
+
+price:
+  basic: 30
+  premium: 40
