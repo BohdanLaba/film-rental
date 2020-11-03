@@ -36,8 +36,4 @@ public class CustomerService {
     save(customer);
   }
 
-  public void processCustomerFilmReturn(String customerId, FilmReturnRequest returnRequest) {
-    Customer customer = getCustomer(customerId);
-
-  }
 }
