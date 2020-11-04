@@ -9,6 +9,7 @@ import com.symphony.filmrental.service.FilmService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,13 +27,13 @@ public class FilmApi {
     return filmService.getAllFilms();
   }
 
-  @PostMapping("/rentFilms")
-  public FilmRentResponse rentFilms(FilmRentRequest rentRequest) {
+  @PostMapping("/rent")
+  public FilmRentResponse rentFilms(@RequestBody FilmRentRequest rentRequest) {
     return filmService.rentFilmsForCustomer(rentRequest);
   }
 
-  @PostMapping("/returnFilms")
-  public FilmReturnResponse returnFilms(FilmReturnRequest filmReturnRequest) {
+  @PostMapping("/return")
+  public FilmReturnResponse returnFilms(@RequestBody FilmReturnRequest filmReturnRequest) {
     return filmService.checkFilmsReturnOverdue(filmReturnRequest);
   }
 

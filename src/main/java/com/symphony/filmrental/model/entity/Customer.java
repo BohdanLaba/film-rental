@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,7 +17,9 @@ import java.util.Objects;
 public class Customer {
   @Id
   private String id;
+  @NotEmpty
   private String firstName;
+  @NotEmpty
   private String lastName;
   private Integer bonusPoints;
 
@@ -24,10 +27,18 @@ public class Customer {
   private List<FilmRented> filmsRented;
 
   public void addRentedFilms(List<FilmRented> filmsRented) {
-    if (Objects.isNull(filmsRented)) {
-      filmsRented = new ArrayList<>();
+    if (Objects.isNull(this.filmsRented)) {
+      this.filmsRented = new ArrayList<>();
     }
     this.filmsRented.addAll(filmsRented);
+  }
+
+  public void addBonusPoints(Integer points) {
+    if (Objects.isNull(this.bonusPoints)) {
+      this.bonusPoints = points;
+    } else {
+      this.bonusPoints += points;
+    }
   }
 
   @Data

@@ -24,6 +24,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FilmService {
 
+  public static final int PREMIUM_POINT = 2;
+  public static final int BONUS_POINT = 1;
+
   private final FilmRepository repository;
 
   private final PriceCalculator priceCalculator;
@@ -55,20 +58,28 @@ public class FilmService {
     return response;
   }
 
+  //TODO divide in two methods
   public FilmReturnResponse checkFilmsReturnOverdue(FilmReturnRequest returnRequest) {
     Customer customer = customerService.getCustomer(returnRequest.getCustomerId());
 
-    Map<String, FilmRented> retunrningFilms = customer.getFilmsRented().stream()
+    Map<String, FilmRented> returningFilms = customer.getFilmsRented().stream()
         .filter(filmRented -> returnRequest.getFilmIds().contains(filmRented.getFilmId()))
         .collect(Collectors.toMap(filmRented -> filmRented.getFilmId(), Function.identity()));
 
-    Integer extraFee = repository.findAllByIdIn(new ArrayList<>(retunrningFilms.keySet()))
-        .stream().map(film ->
-            calculateExtraFee(film.getFilmType(), retunrningFilms.get(film.getId()),
-                returnRequest.getRentEndDate())).reduce(0, (a, b) -> a + b);
+    List<Film> filmsFromDb = repository.findAllByIdIn(new ArrayList<>(returningFilms.keySet()));
+    Integer extraFee = filmsFromDb
+        .stream()
+        .map(film ->
+            calculateExtraFee(film.getFilmType(), returningFilms.get(film.getId()),
+                returnRequest.getRentEndDate()))
+        .reduce(0, (a, b) -> a + b);
+
+    Integer bonusPoints = filmsFromDb.stream()
+        .map(film -> calculateBonusPoints(film)).reduce(0, (a, b) -> a + b);
 
 
-    customer.getFilmsRented().removeAll(retunrningFilms.values());
+    customer.getFilmsRented().removeAll(returningFilms.values());
+    customer.addBonusPoints(bonusPoints);
     customerService.save(customer);
 
     FilmReturnResponse returnResponse = new FilmReturnResponse();
@@ -91,5 +102,14 @@ public class FilmService {
     return TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
   }
 
-
+  private Integer calculateBonusPoints(Film film) {
+    switch (film.getFilmType()) {
+      case NEW:
+        return PREMIUM_POINT;
+      case OLD:
+      case REGULAR:
+      default:
+        return BONUS_POINT;
+    }
+  }
 }

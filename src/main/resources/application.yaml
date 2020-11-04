@@ -1,6 +1,7 @@
 server:
   port: 8080
-  contextPath: /
+  servlet:
+    context-path: /
 
 mongoUri: 'mongodb://localhost:27017/'
 mongoDbName: 'filmrentaldb'

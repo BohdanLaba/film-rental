@@ -12,7 +12,7 @@ public class FilmReturnRequest {
   private String customerId;
   @JsonFormat(
       shape = JsonFormat.Shape.STRING,
-      pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX",
+      pattern = "dd-MM-yyyy",
       timezone = "UTC")
   private Date rentEndDate;
 

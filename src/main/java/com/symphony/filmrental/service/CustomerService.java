@@ -1,13 +1,13 @@
 package com.symphony.filmrental.service;
 
 import com.symphony.filmrental.exception.InvalidCustomerIdException;
-import com.symphony.filmrental.model.dto.FilmReturnRequest;
 import com.symphony.filmrental.model.entity.Customer;
 import com.symphony.filmrental.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -20,6 +20,10 @@ public class CustomerService {
   public Customer getCustomer(String customerId) {
     return repository.findById(customerId)
         .orElseThrow(InvalidCustomerIdException::new);
+  }
+
+  public List<Customer> getAllCustomers() {
+    return repository.findAll();
   }
 
   public void save(Customer customer) {
